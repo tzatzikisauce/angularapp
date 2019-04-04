@@ -13,6 +13,7 @@ export class UsersComponent implements OnInit {
   showExtended: boolean = true;
   loaded: boolean = false;
   enableAdd: boolean = true;
+  showUserForm: boolean = false;
 
   constructor() { }
 
@@ -28,7 +29,8 @@ export class UsersComponent implements OnInit {
               state: 'MA'
           },
           isActive: true,
-          registered: new Date('01/02/2018 08:30:00')
+          registered: new Date('01/02/2018 08:30:00'),
+          hide: true
         },
         {
           firstName: 'Kevan',
@@ -40,7 +42,8 @@ export class UsersComponent implements OnInit {
               state: 'MA'
           },
           isActive: false,
-          registered: new Date('03/11/2018 06:20:00')
+          registered: new Date('03/11/2018 06:20:00'),
+          hide: true
         },
         {
           firstName: 'Karen',
@@ -52,7 +55,8 @@ export class UsersComponent implements OnInit {
               state: 'FL'
           },
           isActive: true,
-          registered: new Date('11/02/2016 10:30:00')
+          registered: new Date('11/02/2016 10:30:00'),
+          hide: true
         }
       ];
 
@@ -61,6 +65,18 @@ export class UsersComponent implements OnInit {
 
   addUser(user: User) {
     this.users.push(user);
+  }
+
+  onSubmit(e) {
+    console.log(123);
+
+    e.preventDefault();
+
+  }
+
+  fireEvent(e) {
+    console.log(e.type);
+    console.log(e.target.value);
   }
 
 
