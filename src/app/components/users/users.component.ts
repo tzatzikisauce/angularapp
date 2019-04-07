@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { UserService } from '../../services/user.service';
 import { User } from '../../models/User';
 
 
@@ -19,56 +19,35 @@ export class UsersComponent implements OnInit {
   loaded: boolean = false;
   enableAdd: boolean = false;
   showUserForm: boolean = false;
+  @ViewChild('userForm') form: any;
+  data: any;
 
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
-    this.users = [
-      {
-        firstName: 'Mike',
-        lastName: 'Nicolaou',
-        email: 'mike@gmail.com',
-        isActive: true,
-        registered: new Date('01/02/2018 08:30:00'),
-        hide: true
-      },
-      {
-        firstName: 'Kevan',
-        lastName: 'Johnson',
-        email: 'kevan@yahoo.com',
-        isActive: false,
-        registered: new Date('03/11/2018 06:20:00'),
-        hide: true
-      },
-      {
-        firstName: 'Karen',
-        lastName: 'Williams',
-        email: 'karen@gmail.com',
-        isActive: true,
-        registered: new Date('11/02/2016 10:30:00'),
-        hide: true
-      }
-    ];
+    this.userService.getData().subscribe(data => {
+      console.log(data);
+    });
+
+    this.userService.getUsers().subscribe(users => {
+      this.users = users;
+      this.loaded = true;
+    })
 
     this.loaded = true;
   }
 
-  // addUser() {
-  //   this.user.isActive = true;
-  //   this.user.registered = new Date();
-  //   this.users.unshift(this.user); //adds to beggining of array
+    onSubmit({value, valid}: {value: User, valid: boolean}) {
+      if(!valid) {
+        console.log('Form is not valid');
+      }else {
+        value.isActive = true;
+        value.registered = new Date();
+        value.hide = true;
 
-  //   this.user = {
-  //     firstName: '',
-  //     lastName: '',
-  //     email: ''
-  //   }
-  // }
+        this.userService.addUser(value);
 
-    onSubmit(e) {
-      console.log(123);
-
-      e.preventDefault();
-
+        this.form.reset();
+      }
     }
   }
